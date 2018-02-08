@@ -153,3 +153,4 @@ neutron bgp-speaker-peer-add bgp-speaker bgp-100-200
 * Show deploying KVM instance for DevStack
 * Change neutron commands to be openstack commands
 * Show announced routes, reachability on Juniper router
+* Clean up network diagram, add interface names
