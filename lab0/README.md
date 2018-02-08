@@ -84,11 +84,11 @@ There are a few things we need to setup on the DevStack instance.
 Remove various preconfigured DevStack subnets and configure router.
 
 ```
-os router remove subnet router1 private-subnet
-os subnet delete private-subnet
-os subnet pool delete shared-default-subnetpool-v4
-os router unset --external-gateway router1
-os subnet delete public-subnet
+openstack router remove subnet router1 private-subnet
+openstack subnet delete private-subnet
+openstack subnet pool delete shared-default-subnetpool-v4
+openstack router unset --external-gateway router1
+openstack subnet delete public-subnet
 ```
 
 Setup address scopes.
@@ -106,8 +106,8 @@ neutron subnet-create --name selfservice --subnetpool selfservice  --prefixlen 2
 Configure Neutron router.
 
 ```
-os router set --external-gateway public router1
-os router add subnet router1 selfservice
+openstack router set --external-gateway public router1
+openstack router add subnet router1 selfservice
 ```
 
 Setup the BGP speaker.
