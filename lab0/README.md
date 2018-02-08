@@ -4,6 +4,12 @@ This README describes how to setup a DevStack instance and then connect it to a 
 
 The two instances will be setup in a single, usually baremetal, KVM node using Libvirt.
 
+## Network Diagram
+
+IP addresses are arbitrary. Feel free to make changes there, otherwise this document will assume what is shown on the diagram is what is in use.
+
+![Network Diagram](img/network-diagram.jpg)
+
 ## Requirements
 
 * KVM node with enough resources to run devstack and a Juniper router
