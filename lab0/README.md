@@ -118,7 +118,7 @@ neutron bgp-speaker-create --ip-version 4 \
 neutron bgp-speaker-network-add bgp-speaker public
 ```
 
-#### validate
+#### Validate Advertised Routes
 
 Show what routes will be announced/advertised.
 
@@ -131,7 +131,7 @@ $ neutron bgp-speaker-advertiseroute-list bgp-speaker
 +-------------+------------+
 ```
 
-#### add peer
+#### Add Peer
 
 Create a peer then add it to the bgp-speaker instance.
 
@@ -146,3 +146,4 @@ neutron bgp-speaker-peer-add bgp-speaker bgp-100-200
 * Show configuring Juniper router
 * Show deploying KVM instance for DevStack
 * Change neutron commands to be openstack commands
+* Show announced routes, reachability on Juniper router
