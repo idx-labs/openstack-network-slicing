@@ -1,0 +1,5 @@
+<network>
+  <name>provider</name>
+  <bridge name='virbr-provider' stp='on' delay='0'/>
+  <domain name='provider'/>
+</network>

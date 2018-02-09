@@ -1,0 +1,5 @@
+<network>
+  <name>bgp</name>
+  <bridge name='virbr-bgp' stp='on' delay='0'/>
+  <domain name='bgp'/>
+</network>
