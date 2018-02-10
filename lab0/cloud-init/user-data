@@ -2,10 +2,10 @@
 password: P@ssw0rd
 chpasswd: { expire: False }
 ssh_pwauth: True
-users:
-  - name: stack
-    homedir: /opt/stack
-    sudo: ['ALL=(ALL) NOPASSWD:ALL']
-    # password: stack
-    # mkpasswd --method=SHA-512 --rounds=4096
-    passwd: $6$rounds=4096$hi0McjVDS$7VaECbeqwhOuC0Ald48Ng5UfzeI5ALIFqt0mBji1G4UTtrjMjXizgG0uk2M1Utbgcc/Z4EbtONg/bltMu4Z/Q1
+# NOTE: below not working
+# users:
+#   - default
+#   - name: stack
+#     homedir: /opt/stack
+#     sudo: ALL=(ALL) NOPASSWD:ALL
+#     plain_text_passwd: 'stack'
