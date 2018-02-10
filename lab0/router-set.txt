@@ -1,0 +1,27 @@
+set version 17.3R1.10
+set system host-name router
+set system root-authentication encrypted-password "$6$lMIM2Pie$.gGEqzcmGjcbjnCNiCcmu1x8.VQOE8SsOY0JOrxsos9.dbSVo2xkJuiyp.G43d/t7wke2AW3LG.ay.KX1.MwW1"
+set system services ssh root-login allow
+set system services netconf ssh
+set system services web-management http interface fxp0.0
+set system syslog user * any emergency
+set system syslog file messages any any
+set system syslog file messages authorization info
+set system syslog file interactive-commands interactive-commands any
+set system license autoupdate url https://ae1.juniper.net/junos/key_retrieval
+set security forwarding-options family inet6 mode packet-based
+set security forwarding-options family mpls mode packet-based
+set security forwarding-options family iso mode packet-based
+set interfaces ge-0/0/0 unit 0 family inet address 10.55.0.1/24
+set interfaces ge-0/0/1 unit 0 family inet address 172.24.4.1/24
+set interfaces fxp0 unit 0 family inet address 192.168.122.200/24
+set interfaces lo0 unit 0 family inet address 1.1.1.1/32
+set routing-options router-id 1.1.1.1
+set routing-options autonomous-system 100
+set protocols bgp group external-peers type external
+set protocols bgp group external-peers multihop ttl 3
+set protocols bgp group external-peers passive
+set protocols bgp group external-peers neighbor 10.55.0.2 peer-as 200
+set policy-options policy-statement BGP_NEXTHOP from protocol bgp
+set policy-options policy-statement BGP_NEXTHOP from neighbor 10.55.0.2
+set policy-options policy-statement BGP_NEXTHOP then next-hop 172.24.4.1

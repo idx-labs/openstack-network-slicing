@@ -184,6 +184,8 @@ root@%
 
 Configure the router.
 
+*NOTE: The full set of commands can be seen [here](router-set.txt).*
+
 ```
 set system host-name router
 set interfaces ge-0/0/0 unit 0 family inet address 10.55.0.1/24
