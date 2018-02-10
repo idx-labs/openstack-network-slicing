@@ -6,6 +6,3 @@ users:
   - name: stack
     homedir: /opt/stack
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
-
-
-runcmd:
