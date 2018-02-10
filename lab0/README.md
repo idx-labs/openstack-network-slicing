@@ -362,7 +362,7 @@ stack@ubuntu:~/devstack$ os network list -c Name
 
 DevStack will not configure the interface we intend to use as the BGP session interface.
 
-Ensure ens4 is configured by entering the below into /etc/network/interfaces.d/ens4.cfg.
+Ensure ens4 is configured by entering the below into ``/etc/network/interfaces.d/ens4.cfg`.
 
 *NOTE: The following commands are all run from the DevStack instance, not from the KVM node.*
 
@@ -386,6 +386,8 @@ ping 10.55.0.2
 ```
 
 #### IMPORTANT!: Flush IPs on br-ex and set ens6 up
+
+DevStack configures br-ex with the 172.24.4.1 gateway, which is not desirable for this deployment as we want the Juniper router to be the default gateway for the provider network.
 
 ```
 sudo ip address flush dev br-ex
