@@ -144,13 +144,7 @@ virsh console router
 
 Login use the same username and password as mentioned previously.
 
-Set an IP on fxp0.
-
-*NOTE: Replace "y" with an available IP on the default network.*
-
-set interfaces fxp0 unit 0 family inet address 192.168.122.200/24
-
-
+Set an fxp0 to use dhcp.
 ```
 root# set interfaces fxp0 unit 0 family inet dhcp-client
 
