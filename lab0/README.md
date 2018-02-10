@@ -559,3 +559,4 @@ Now OpenStack is connected via BGP to a Juniper router and we are on our way to 
 * Don't use virt-install to create the Juniper router
 * DONE: Set fxp0 as dhcp in juniper.conf iso
 * add stack user creation to user-data
+* Using devstack takes too long for a lab, need a faster way to create an openstack image
