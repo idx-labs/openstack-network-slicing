@@ -1,4 +1,11 @@
 #cloud-config
-password: P@ssw0rd 
+password: P@ssw0rd
 chpasswd: { expire: False }
 ssh_pwauth: True
+users:
+  - name: stack
+    homedir: /opt/stack
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+
+
+runcmd:
