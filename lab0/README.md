@@ -59,6 +59,17 @@ virsh net-start provider
 virsh net-autostart provider
 ```
 
+There should be at least three networks now: default, bgp, and provider.
+
+```
+$ virsh net-list
+ Name                 State      Autostart     Persistent
+----------------------------------------------------------
+ bgp                  active     yes           yes
+ default              active     yes           yes
+ provider             active     yes           yes
+```
+
 ## Deploy Juniper Router
 
 ### Obtain the Juniper vSRX Image
@@ -87,7 +98,7 @@ ${IMG_PATH}/router.img
 
 ### Create cloud-init ISO
 
-One the KVN node, create an ISO image that will be attached to the Juniper router virtual machine. The ISO image contains a base configuration that will configure the vSRX instance to be a packet router as opposed to a firewall.
+One the KVM node, create an ISO image that will be attached to the Juniper router virtual machine. The ISO image contains a base configuration that will configure the vSRX instance to be a packet router as opposed to a firewall.
 
 ```
 cd ~/openstack-network-slicing/lab0
@@ -359,7 +370,7 @@ List networks.
 *NOTE: The openstack command is aliases to a shorter version `os`.*
 
 ```
-os network list -c Name
+$ os network list -c Name
 +---------+
 | Name    |
 +---------+
@@ -374,7 +385,7 @@ os network list -c Name
 
 DevStack will not configure the interface we intend to use as the BGP session interface.
 
-Ensure ens4 is configured by entering the below into ``/etc/network/interfaces.d/ens4.cfg`.
+Ensure ens4 is configured by entering the below into `/etc/network/interfaces.d/ens4.cfg`.
 
 *NOTE: The following commands are all run from the DevStack instance, not from the KVM node.*
 
