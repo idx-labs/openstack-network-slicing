@@ -13,26 +13,22 @@ IP addresses are arbitrary. Feel free to make changes, otherwise this document w
 
 ## Requirements
 
-* KVM node with enough resources to run devstack and a Juniper router
+* KVM node with enough resources to run a virtualized DevStack and Juniper router
+* Preferably nested KVM enabled in the KVM node (In Ubuntu Xenial it is by default)
 * Access to the Juniper vSRX image
+
+|               | Memory        | CPU   |
+| ------------- |:-------------:| -----:|
+| DevStack      | 8-12GB        |   4+  |
+| Juniper Router| 4GB           |   2   |
 
 ## How To Use This Document
 
 This is a step by setp document that shows the manual creation of a DevStack instance and Juniper router, and all the steps necessary to connect OpenStack to a Juniper router via a BGP session, and have OpenStack announce routes to the Juniper router.
 
-Most of the commands are meant to be "cut and pastable" into terminal windows, either on the KVM node, the DevStack instance, or the Juniper router.
+Most of the commands are meant to be "cut and pasted" into terminal windows, either on the KVM node, the DevStack instance, or the Juniper router.
 
 Future documents will include full automation as an option. However, sometimes the best way to learn is to set everything up manually at least once.
-
-## Setup Libvirt Networking
-
-We need at least three libvirt networks.
-
-1. Default network - This is created by Libvirt/Virsh, and will be used for management
-2. A network for the BGP session to occur over
-3. A network that will become the provider network, and where the Neutron routers will have their external gateway/interface.
-
-The DevStack instance will have three interfaces, one on each of these networks. The same will occur for the Juniper vSRX router.
 
 ## Checkout This Repository on the KVM Server
 
@@ -45,7 +41,17 @@ git clone https://github.com/idx-labs/openstack-network-slicing/
 cd openstack-network-slicing
 ```
 
-## Create Libvirt Networks
+## Libvirt Networking
+
+We need at least three libvirt networks.
+
+1. Default network - This is created by Libvirt/Virsh, and will be used for management
+2. A network for the BGP session to occur over
+3. A network that will become the provider network, and where the Neutron routers will have their external gateway/interface.
+
+The DevStack instance will have three interfaces, one on each of these networks. The same will occur for the Juniper vSRX router.
+
+### Create Libvirt Networks
 
 On the KVM node:
 
@@ -86,7 +92,7 @@ We assume the image is placed in `/var/lib/libvirt/images`.
 
 ### Create the VM on the KVM node.
 
-On the KVM node, build a backing image.
+On the KVM node, build an image based on the vSRX image.
 
 ```
 export IMG_PATH=/var/lib/libvirt/images
@@ -241,7 +247,7 @@ sudo wget https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-
 Resize the image. By default it's only 2.2GB. Add 38GB to make it ~40GB.
 
 ```
-qemu-img resize /var/lib/libvirt/images/xenial-server-cloudimg-amd64-disk1.img +38G
+sudo qemu-img resize /var/lib/libvirt/images/xenial-server-cloudimg-amd64-disk1.img +38G
 ```
 
 Create a backing image.
