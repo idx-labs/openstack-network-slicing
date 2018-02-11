@@ -7,7 +7,7 @@ The two instances will be setup in a single, usually baremetal, KVM node using L
 
 ## Network Diagram
 
-IP addresses are arbitrary. Feel free to make changes there, otherwise this document will assume what is shown on the diagram is what is in use.
+IP addresses are arbitrary. Feel free to make changes, otherwise this document will assume what is shown on the diagram is what is in use.
 
 ![Network Diagram](img/network-diagram.jpg)
 
@@ -22,7 +22,7 @@ This is a step by setp document that shows the manual creation of a DevStack ins
 
 Most of the commands are meant to be "cut and pastable" into terminal windows, either on the KVM node, the DevStack instance, or the Juniper router.
 
-Future documents will include full automation.
+Future documents will include full automation as an option. However, sometimes the best way to learn is to set everything up manually at least once.
 
 ## Setup Libvirt Networking
 
@@ -112,7 +112,7 @@ Build the virtual router using `virt-install`.
 
 ```
 export IMG_PATH=/var/lib/libvirt/images
-virt-install --name router \
+sudo virt-install --name router \
 --cpuset=auto \
 --ram=4096 \
 --cpu SandyBridge,+vmx,-invtsc \
@@ -443,7 +443,13 @@ sudo systemctl restart devstack@q-dr-agent.service
 
 There are a few things we need to setup on the DevStack instance.
 
-Remove various preconfigured DevStack subnets and configure router.
+First, on the DevStack node, ensure credentials are sourced.
+
+```
+. ~/devstack/accrc/admin/admin
+```
+
+Remove various preconfigured DevStack subnets and deconfigure router.
 
 ```
 openstack router remove subnet router1 private-subnet
@@ -517,11 +523,9 @@ inet.0
                        1          1          0          0          0          0
 Peer                     AS      InPkt     OutPkt    OutQ   Flaps Last Up/Dwn State|#Active/Received/Accepted/Damped...
 10.55.0.2               200          5          2       0       2          27 1/1/1/0              0/0/0/0
-
-root@router>
 ```
 
-Routes. Note that 10.0.0.0/24 is a BGP route from 10.55.0.2.
+Show routes. Note that 10.0.0.0/24 is a BGP route from 10.55.0.2.
 
 ```
 root@router> show route    
@@ -554,7 +558,7 @@ ff02::2/128        *[INET6/0] 00:38:24
                       MultiRecv
 ```
 
-Ping 10.0.0.1.
+Ping 10.0.0.1, which is the Neutron gateway for the selfservice subnet.
 
 ```
 root@router> ping 10.0.0.1   
@@ -586,3 +590,4 @@ Now OpenStack is connected via BGP to a Juniper router and we are on our way to 
 * add stack user creation to user-data
 * Using devstack takes too long for a lab, need a faster way to create an openstack image
 * Check into [validation-state: unverified](https://kb.juniper.net/InfoCenter/index?page=content&id=KB27919) in the show route output
+* Re-order to have the DevStack build first so that the Juniper router can be setup while DevStack is installing
