@@ -18,7 +18,7 @@ IP addresses are arbitrary. Feel free to make changes there, otherwise this docu
 
 ## How To Use This Document
 
-This is a step by setp document that shows the manual creation of a DevStack and Juniper router, and all the steps necessary to connect OpenStack to a Juniper router via a BGP session, and have OpenStack announce routes to the Juniper router.
+This is a step by setp document that shows the manual creation of a DevStack instance and Juniper router, and all the steps necessary to connect OpenStack to a Juniper router via a BGP session, and have OpenStack announce routes to the Juniper router.
 
 Most of the commands are meant to be "cut and pastable" into terminal windows, either on the KVM node, the DevStack instance, or the Juniper router.
 
@@ -503,6 +503,8 @@ neutron bgp-peer-create --peer-ip 10.55.0.1 \
 neutron bgp-speaker-peer-add bgp-speaker bgp-100-200
 ```
 
+At this point the BGP session should be up and the DevStack instance should be announcing routes to the Juniper router, it's peer.
+
 ## Validate Connectivity
 
 BGP summary:
@@ -583,3 +585,4 @@ Now OpenStack is connected via BGP to a Juniper router and we are on our way to 
 * DONE: Set fxp0 as dhcp in juniper.conf iso
 * add stack user creation to user-data
 * Using devstack takes too long for a lab, need a faster way to create an openstack image
+* Check into [validation-state: unverified](https://kb.juniper.net/InfoCenter/index?page=content&id=KB27919) in the show route output
