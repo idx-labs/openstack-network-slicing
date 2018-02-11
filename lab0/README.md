@@ -15,9 +15,16 @@ IP addresses are arbitrary. Feel free to make changes there, otherwise this docu
 
 * KVM node with enough resources to run devstack and a Juniper router
 * Access to the Juniper vSRX image
-* A Xenial virtual machine running on the KVM node
 
-## Setup Networking
+## How To Use This Document
+
+This is a step by setp document that shows the manual creation of a DevStack and Juniper router, and all the steps necessary to connect OpenStack to a Juniper router via a BGP session, and have OpenStack announce routes to the Juniper router.
+
+Most of the commands are meant to be "cut and pastable" into terminal windows, either on the KVM node, the DevStack instance, or the Juniper router.
+
+Future documents will include full automation.
+
+## Setup Libvirt Networking
 
 We need at least three libvirt networks.
 
@@ -29,11 +36,13 @@ The DevStack instance will have three interfaces, one on each of these networks.
 
 ## Checkout This Repository on the KVM Server
 
+On the KVM server cone this repository.
+
 *NOTE: This assumes that the KVM/libvirt server has already been deployed on Ubuntu Xenial 16.04.*
 
 ```
-root@kvm# git clone https://github.com/idx-labs/openstack-network-slicing/
-root@kvm# cd openstack-network-slicing
+git clone https://github.com/idx-labs/openstack-network-slicing/
+cd openstack-network-slicing
 ```
 
 ## Create Libvirt Networks
@@ -64,9 +73,9 @@ media-vsrx-vmdisk-17.3R1.10.qcow2
 
 We assume the image is placed in `/var/lib/libvirt/images`.
 
-### Create the VM
+### Create the VM on the KVM node.
 
-Build a backing image.
+On the KVM node, build a backing image.
 
 ```
 export IMG_PATH=/var/lib/libvirt/images
@@ -78,7 +87,7 @@ ${IMG_PATH}/router.img
 
 ### Create cloud-init ISO
 
-Create an ISO image that will be attached to the Juniper router virtual machine. The ISO image contains a base configuration that will configure the vSRX instance to be a packet router as opposed to a firewall.
+One the KVN node, create an ISO image that will be attached to the Juniper router virtual machine. The ISO image contains a base configuration that will configure the vSRX instance to be a packet router as opposed to a firewall.
 
 ```
 cd ~/openstack-network-slicing/lab0
@@ -138,6 +147,8 @@ virsh start router
 
 After a few minutes the login should be available again from virsh console.
 
+*NOTE: The Juniper router can take up to 10 minutes to start up.*
+
 ```
 virsh console router
 ```
@@ -145,6 +156,7 @@ virsh console router
 Login use the same username and password as mentioned previously.
 
 Set an fxp0 to use dhcp.
+
 ```
 root# set interfaces fxp0 unit 0 family inet dhcp-client
 
@@ -182,7 +194,7 @@ root@%
 
 ### Configure the Juniper Router
 
-Configure the router.
+Login to the router and configure it from a `conf#` session and commit the changes.
 
 *NOTE: The full set of commands can be seen [here](router-set.txt).*
 
@@ -202,15 +214,13 @@ set policy-options policy-statement BGP_NEXTHOP from neighbor 10.55.0.2
 set policy-options policy-statement BGP_NEXTHOP then next-hop 172.24.4.1
 ```
 
-Note the "passive" settings and policy statements.
-
-The DevStack BGP agent is not listening on port 179, the Juniper router can't connect to it, so it must be set to passive.
+Note the "passive" settings and policy statements. The DevStack BGP agent is not listening on port 179, the Juniper router can't connect to it, so it must be set to passive.
 
 ## Deploy DevStack
 
 ### Create Virtual Machine
 
-Download the Ubuntu cloud image.
+On the KVM node, download the Ubuntu cloud image.
 
 ```
 cd /var/lib/libvirt/images
@@ -243,7 +253,7 @@ sudo genisoimage \
 sudo chmod 777 /var/lib/libvirt/images/cloud-init.iso
 ```
 
-Now create the virtual machine.
+Now define and create the virtual machine.
 
 ```
 sudo virsh define devstack.xml
@@ -270,6 +280,8 @@ ssh 192.168.122.x
 
 #### Install DevStack
 
+Add a `stack` user.
+
 ```
 sudo useradd -s /bin/bash -d /opt/stack -m stack
 echo "stack ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/stack
@@ -284,7 +296,7 @@ exit
 ssh stack@192.168.122.x
 ```
 
-Clone devstack.
+Clone devstack and checkout a stable branch.
 
 ```
 git clone https://git.openstack.org/openstack-dev/devstack
@@ -339,7 +351,7 @@ OS_PROJECT_DOMAIN_NAME=default
 Source openstack credentials.
 
 ```
-stack@ubuntu:~/devstack$ . ~/devstack/accrc/admin/admin
+. ~/devstack/accrc/admin/admin
 ```
 
 List networks.
@@ -347,7 +359,7 @@ List networks.
 *NOTE: The openstack command is aliases to a shorter version `os`.*
 
 ```
-stack@ubuntu:~/devstack$ os network list -c Name
+os network list -c Name
 +---------+
 | Name    |
 +---------+
