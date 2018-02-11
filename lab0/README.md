@@ -17,7 +17,9 @@ IP addresses are arbitrary. Feel free to make changes, otherwise this document w
 * Preferably nested KVM enabled in the KVM node (In Ubuntu Xenial it is by default)
 * Access to the Juniper vSRX image
 
-|               | Memory        | CPU   |
+### Memory and CPU Requirements
+
+|               | Memory        | vCPU  |
 | ------------- |:-------------:| -----:|
 | DevStack      | 8-12GB        |   4+  |
 | Juniper Router| 4GB           |   2   |
