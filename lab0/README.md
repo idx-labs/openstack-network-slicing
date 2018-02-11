@@ -5,6 +5,16 @@ This README describes how to setup a DevStack instance and then connect it to a 
 
 The two instances will be setup in a single, usually baremetal, KVM node using Libvirt.
 
+## Network Automation and Integration
+
+Often OpenStack clouds are deployed as completely individual units, islands if you will, that are not integrated with the network that they are deployed into. This actually makes it difficult to deploy OpenStack as considerable time is spent on figuring out how to "jam" OpenStack into an existing network. OpenStack is a complex and complicated system, and it's easy to make it worse by making deployed it as a segregated system.
+
+While the steps in this lab are manual, the point is to setup an OpenStack system which is integrated with an existing network. In this example, we are only deploying a small DevStack instance and a single Juniper router, but it doesn't take much to imagine the OpenStack deployment being larger and the network that it is integrating with being complex and made up of many nodes, maybe even a Service Providers core MPLS network.
+
+Once deployed, when non-admin tenant self service Neutron networks are created in admin-configured subnet pools, the (sub)networks will be automatically be available globally via the Neutron router they are attached to. This is a form of network automation, and also solves some problems such as external access to VXLAN tenant networks (which, admittedly, can be solved in other ways as well).
+
+Certainly network architecture can be, and usually is, extremely varied, but this is certainly one way to better integrate OpenStack into an existing network and solve some access problems, while also increasing network programmability.
+
 ## Network Diagram
 
 IP addresses are arbitrary. Feel free to make changes, otherwise this document will assume what is shown on the diagram is what is in use.
@@ -26,7 +36,7 @@ IP addresses are arbitrary. Feel free to make changes, otherwise this document w
 
 ## How To Use This Document
 
-This is a step by setp document that shows the manual creation of a DevStack instance and Juniper router, and all the steps necessary to connect OpenStack to a Juniper router via a BGP session, and have OpenStack announce routes to the Juniper router.
+This is a step by step document that shows the manual creation of a DevStack instance and Juniper router, and all the actions necessary to connect OpenStack to a Juniper router via a BGP session, and have OpenStack announce routes to the Juniper router.
 
 Most of the commands are meant to be "cut and pasted" into terminal windows, either on the KVM node, the DevStack instance, or the Juniper router.
 
@@ -585,6 +595,10 @@ root@router>
 ## Conclusion
 
 Now OpenStack is connected via BGP to a Juniper router and we are on our way to all kinds of interesting automation.
+
+## Bonus Work
+
+TBD - Eg. boot instances and configure networks.
 
 ## Todo
 
