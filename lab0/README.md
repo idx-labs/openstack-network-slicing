@@ -1,4 +1,4 @@
-# OpenStack DevStack and BGP
+# OpenStack DevStack, Neutron Dynamic Routing, and Juniper vSRX
 
 
 This README describes how to setup a DevStack instance and then connect it to a virtual Juniper router and establishing a BGP session using [Neutron Dynamic Routing](https://docs.openstack.org/neutron-dynamic-routing/latest/admin/bgp-speaker.html) to configure a BGP speaker that can announce dynamically created networks.
@@ -7,7 +7,7 @@ The two instances will be setup in a single, usually baremetal, KVM node using L
 
 ## Network Automation and Integration
 
-Often OpenStack clouds are deployed as completely individual units, islands if you will, that are not integrated with the network that they are deployed into. This actually makes it difficult to deploy OpenStack as considerable time is spent on figuring out how to "jam" OpenStack into an existing network. OpenStack is a complex and complicated system, and it's easy to make it worse by making deployed it as a segregated system.
+Often OpenStack clouds are deployed as completely individual units, islands if you will, that are not integrated with the network that they are deployed into. This actually makes it difficult to deploy OpenStack as considerable time is spent on figuring out how to "jam" OpenStack into an existing network. OpenStack is a complex and complicated system, and it's easy to make it worse by deploying it as a segregated system.
 
 While the steps in this lab are manual, the point is to setup an OpenStack system which is integrated with an existing network. In this example, we are only deploying a small DevStack instance and a single Juniper router, but it doesn't take much to imagine the OpenStack deployment being larger and the network that it is integrating with being complex and made up of many nodes, maybe even a Service Providers core MPLS network.
 
